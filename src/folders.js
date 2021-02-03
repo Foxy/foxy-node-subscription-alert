@@ -23,7 +23,7 @@ import { config } from "../config.js";
  *
  * An object representing a particular email alert, complete with the type, number of days, templates available and their contents.
  *
- * @typedef {{ type: string, days: number, folder: string, files: FileVersions, subject: string }} MailFolder
+ * @typedef {{ type: string, days: number, folder: string, files: FileVersions, subject: string, status: "active"|"inactive"|"any" }} MailFolder
  * @property {string} type: the type of the mail folder, either within (send in X days) or past (send after X days).
  * @property {number} days: the number of days before or after to send the email
  * @property {string} folder: the folder path
@@ -57,7 +57,7 @@ function getFolders(folderList) {
  * @returns {boolean}
  */
 function folderValid(folder) {
-  if (!folder.match(/^(within|past)-\d+$/))
+  if (!folder.match(/^((active|inactive)-)?(within|past)-\d+$/))
     // the folder name indicates how to send the emails
     return false;
   const folderPath = path.join(config.emailFolder, folder);
@@ -107,9 +107,11 @@ function getSubject(folder) {
  */
 function buildFolder(folder) {
   const fullFolderPath = path.join(config.emailFolder, folder);
-  const match = folder.match(/^(?<type>[A-Za-z]+)-(?<days>\d+)$/);
+  const match = folder.match(
+    /^(?<status>(active|inactive)-)?(?<type>[A-Za-z]+)-(?<days>\d+)$/
+  );
   const fileList = getFiles(fullFolderPath);
-  const subject = getSubject(path.join(fullFolderPath, "subject.txt"));
+  const subject = getSubject(path.join(fullFolderPath));
   const files = {};
   for (const f of fileList) {
     files[f.type] = f;
@@ -118,6 +120,7 @@ function buildFolder(folder) {
     return {
       type: match.groups.type,
       days: Number(match.groups.days),
+      status: match.groups.status || "any",
       folder,
       files,
       subject,

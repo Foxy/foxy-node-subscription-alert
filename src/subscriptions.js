@@ -25,31 +25,35 @@ const Config = config;
  * Retrieve the subscriptions that should be alerted for the given day.
  *
  * @param days
+ * @param {"any"|"active"|"inactive"} status
+ * @param api
  * @returns {Promise<*>}
  */
-async function getSubscriptions(days, api = getApi()) {
-  return (await fetchSubscriptions(days, api)).map(
+async function getSubscriptions(days, status = "any", api = getApi()) {
+  return (await fetchSubscriptions(days, status, api)).map(
     apiSubscription2Subscription
   );
 }
 
-export async function fetchSubscriptions(days, api = getApi()) {
+export async function fetchSubscriptions(days, status, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
   const [a, b] = [d1.toISOString(), d2.toISOString()];
+  const options = {
+    zoom: {
+      customer: ["first_name", "last_name", "email"],
+      original_transaction: ["items"],
+    },
+    filters: [`next_transaction_date=${d1.toISOString()}..${d2.toISOString()}`],
+  };
+  if (status !== "any") {
+    options.zoom.is_active = status === "active";
+  }
   const subscriptionsResponse = await api
     .follow("fx:store")
     .follow("fx:subscriptions")
-    .get({
-      zoom: {
-        customer: ["first_name", "last_name", "email"],
-        original_transaction: ["items"],
-      },
-      filters: [
-        `next_transaction_date=${d1.toISOString()}..${d2.toISOString()}`,
-      ],
-    });
+    .get(options);
   const subscriptions = await subscriptionsResponse.json();
   return subscriptions["_embedded"]["fx:subscriptions"];
 }
