@@ -1,0 +1,13 @@
+<p>Dear {{customer.last_name}}</p>
+
+<p>We would like to inform you that your subscription will be renewed in 3 days.</p>
+
+<p>Here are the subscription details: </p>
+<ul> 
+{% for item in items %}
+  <li><a href="{{ item.url }}">{{ item.name }} - {{ item.price }}</a></li>
+{% endfor %}
+</ul>
+
+<p>Total: {{ currency }} {{ total }}</p>
+

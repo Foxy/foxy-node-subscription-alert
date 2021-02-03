@@ -1,0 +1,19 @@
+<mjml>
+  <mj-body>
+    <mj-section background-url="https://www.foxy.io/user/themes/default/images/backgrounds/hero-background-dark.jpg">
+      <mj-column>
+        <mj-image width="200px" src="https://foxy.io/user/themes/default/images/logo-light.svg"></mj-image>
+        <mj-divider border-color="rgb(255,174,0)"></mj-divider>
+        <mj-text font-size="16px" color="#eeeeee" font-family="helvetica">
+          <p>Hello {{ customer.first_name }} {{ customer.last_name}},</p>
+          <p>This is a friendly reminder that your subscription is about to be renewed in 7 days. Here are some more details about the subscription:</p>
+          <ul> {% for item in items %}
+            <li><a href="{{ item.url }}">{{ item.name }} - {{ item.price }}</a></li>
+          {% endfor %}</ul>
+          <p>Total: {{ transaction.currency }} {{ transaction.total }}</p>
+        </mj-text>
+        <mj-divider border-color="rgb(255,174,0)"></mj-divider>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

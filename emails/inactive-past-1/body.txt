@@ -1,0 +1,17 @@
+Hi {{ customer.first_name }} {{ customer.last_name }},
+
+
+We would like to remind you that your renewal date was yesterday.
+
+Here are the details of the subscription:
+
+{% for item in items %}
+  {{ item.name }} - {{ item.price }}
+{% endfor %}
+
+Total: {{ currency }}{{ total }}
+
+
+
+--
+`;
