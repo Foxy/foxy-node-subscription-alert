@@ -2,7 +2,6 @@
 
 Allows automatically sending messages for subscribers at specific configurable dates relative to the subscriptions `nextdate`.
 
-
 ## Usage
 
 Sending alert emails can be as easy as creating a folder and some files.
@@ -19,13 +18,16 @@ With this file structure in place, emails will be sent to users 5 days before th
 messages will be sent in HTML (using the contents of the `.html` file) with a text fallback (with the contents of
 the `.txt` file) for those users that for whatever reason cannot load the HTML message.
 
-### Sensible defaults
-
-There are some sensible defaults already put in place. You can use them as they are or use them as inspiration to create your own email templates.
 
 ## Creating your email alerts
 
 Each email alert is a folder within the `emails` folder.
+Simply create these folders to create new email alerts. 
+
+### Sensible defaults
+
+There are some sensible defaults already put in place.
+You can use them as they are or use them as inspiration to create your own email templates.
 
 #### Naming your subscription alert folder
 The way you name your folder will determine how it will be sent.
