@@ -8,9 +8,10 @@
   },
   "keywords": [
     "Foxy",
-    "mail"
+    "mail",
+    "subscription"
   ],
-  "author": "",
+  "author": "Foxy.io",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
