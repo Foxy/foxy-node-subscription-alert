@@ -24,8 +24,8 @@ function sendMail(message, transport = null) {
 }
 
 function handleMailSent(err, info) {
-  console.err(err);
-  console.log(info);
+  if (err) console.error("Error sending email:", err);
+  else console.log("Successfully sent mail:", info);
 }
 
 async function sendEmailAlerts() {
