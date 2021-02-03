@@ -1,4 +1,4 @@
-# Subscriber Alert Folders
+# Foxy Subscription Alerts
 
 Allows automatically sending messages for subscribers at specific configurable dates relative to the subscriptions `nextdate`.
 
