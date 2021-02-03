@@ -1,7 +1,5 @@
 import Twig from "twig";
 import mjml2html from "mjml";
-import jsdom from "jsdom";
-import * as JSDOM from "jsdom";
 import { htmlToText } from "html-to-text";
 import { config } from "../config.js";
 
