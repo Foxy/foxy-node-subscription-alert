@@ -14,7 +14,7 @@ const Config = config;
  */
 
 /**
- * @typedef {{id: number, date: Date, total: number, currency: string}} Transaction
+ * @typedef {{total: number, currency: string}} Transaction
  */
 
 /**
@@ -77,10 +77,13 @@ function getApi(cfg = Config) {
 /**
  *
  * @param {FxSubscription} apiSub
- * @returns {{customer: Customer}}
+ * @returns {Subscription}
  */
 function apiSubscription2Subscription(apiSub) {
   return {
+    start_date: apiSub.start_date,
+    end_date: apiSub.end_date,
+    frequency: apiSub.frequency,
     customer: apiSub2Customer(apiSub),
     transaction: apiSub2Transaction(apiSub),
     items: apiSub2Items(apiSub),
@@ -94,10 +97,11 @@ function apiSubscription2Subscription(apiSub) {
  * @returns {Customer} the customer of this subscription
  */
 function apiSub2Customer(apiSub) {
+  const customer = apiSub["_embedded"]["fx:customer"] || {};
   return {
-    first_name: apiSub["_embedded"]["fx:customer"]["first_name"],
-    last_name: apiSub["_embedded"]["fx:customer"]["last_name"],
-    email: apiSub["_embedded"]["fx:customer"]["email"],
+    first_name: customer["first_name"],
+    last_name: customer["last_name"],
+    email: customer["email"],
   };
 }
 
@@ -110,9 +114,7 @@ function apiSub2Customer(apiSub) {
 function apiSub2Transaction(apiSub) {
   const tx = apiSub["_embedded"]["fx:original_transaction"];
   return {
-    id: Number(tx.id),
-    date: new Date(tx.transaction_date),
-    total: Number(tx.total_order),
+    total: tx.total_order.toString(),
     currency: tx.currency_symbol,
   };
 }
@@ -132,9 +134,11 @@ function apiSub2Items(apiSub) {
     code: i.code,
     price: Number(i.price),
     url: i.url,
+    image: i.image,
   }));
 }
 
 export const Subscriptions = {
   getSubscriptions,
+  apiSubscription2Subscription,
 };

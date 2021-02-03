@@ -1,5 +1,5 @@
 import * as FoxySDK from "@foxy.io/sdk";
-import { fetchSubscriptions } from "../src/subscriptions.js";
+import { fetchSubscriptions, Subscriptions } from "../src/subscriptions.js";
 import { Folders } from "../src/folders.js";
 import { Parser } from "../src/parser.js";
 

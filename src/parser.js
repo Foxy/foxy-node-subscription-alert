@@ -20,12 +20,20 @@ function restrictVariables(data) {
       email: data.customer.email,
     },
     items: data.items
-      ? data.items.map((i) => ({ name: i.name, price: i.price }))
+      ? data.items.map((i) => ({
+          name: i.name,
+          price: i.price,
+          code: i.code,
+          url: i.url,
+          image: i.image,
+          quantity: i.quantity,
+        }))
       : [],
     start_date: data.start_date,
     end_date: data.end_date,
     frequency: data.frequency,
-    status: data.status,
+    currency: data.transaction.currency,
+    total: data.transaction.total,
   };
 }
 
@@ -38,7 +46,7 @@ function restrictVariables(data) {
  */
 function folder2message(message, subscription, cfg = config) {
   const html = message.files.mjml
-    ? processMjml(message.files.mjml.content)
+    ? processMjml(message.files.mjml.content).html
     : message.files.html
     ? message.files.html.content
     : "";
@@ -72,7 +80,8 @@ function plainTextVersion(content) {
 }
 
 function processVariables(content, variables) {
-  return Twig.twig({ data: content }).render(restrictVariables(variables));
+  const restricted = restrictVariables(variables);
+  return Twig.twig({ data: content }).render(restricted);
 }
 
 export const Parser = {
