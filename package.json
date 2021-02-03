@@ -6,6 +6,9 @@
   "scripts": {
     "test": "c8 mocha"
   },
+  "engines": {
+    "node": ">= 12.20.1"
+  },
   "keywords": [
     "Foxy",
     "mail",
