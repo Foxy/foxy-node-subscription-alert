@@ -29,16 +29,19 @@ function handleMailSent(err, info) {
 }
 
 async function sendEmailAlerts() {
-  const alerts = Folders.findFolders();
-  for (let a of alerts) {
-    console.assert(["within", "past"].includes(a.type));
-    const days = a.type === "past" ? a.days * -1 : a.days;
-    const subscriptions = await Subscriptions.getSubscriptions(days);
-    console.log("subscriptions", subscriptions);
-    const messages = subscriptions.map((s) => Parser.folder2message(a, s));
-    console.log("Messages", messages);
+  const folders = Folders.findFolders();
+  for (let folder of folders) {
+    console.assert(["within", "past"].includes(folder.type));
+    const days = folder.type === "past" ? folder.days * -1 : folder.days;
+    const subscriptions = await Subscriptions.getSubscriptions(
+      days,
+      folder.status
+    );
+    const messages = subscriptions.map((subscription) =>
+      Parser.folder2message(folder, subscription)
+    );
     messages.forEach((m) => sendMail(m));
   }
 }
 
-sendEmailAlerts().then(console.log);
+sendEmailAlerts().then(() => console.log("done."));
