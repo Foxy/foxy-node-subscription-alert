@@ -50,12 +50,16 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
   if (status !== "any") {
     options.zoom.is_active = status === "active";
   }
+  try {
   const subscriptionsResponse = await api
     .follow("fx:store")
     .follow("fx:subscriptions")
     .get(options);
   const subscriptions = await subscriptionsResponse.json();
   return subscriptions["_embedded"]["fx:subscriptions"];
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -68,9 +72,9 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
  */
 function getApi(cfg = Config) {
   return new FoxySDK.Integration.API({
-    refreshToken: cfg.store.refreshToken,
-    clientSecret: cfg.store.clientSecret,
-    clientId: cfg.store.clientId,
+    refreshToken: cfg.store.refreshToken || cfg.store.refresh_token,
+    clientSecret: cfg.store.clientSecret || cfg.store.client_secret,
+    clientId: cfg.store.clientId || cfg.store.refresh_id,
   });
 }
 

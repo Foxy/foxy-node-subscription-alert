@@ -2,6 +2,7 @@ import { config } from "./config.js";
 import { Folders } from "./src/folders.js";
 import { Parser } from "./src/parser.js";
 import { Subscriptions } from "./src/subscriptions.js";
+import { getSmtpAccount } from "./src/smtp.js";
 import nodemailer from "nodemailer";
 
 const cfg = config;
@@ -16,9 +17,10 @@ function getTransporter(config = cfg.smtp) {
   return nodemailer.createTransport(config);
 }
 
-function sendMail(message, transport = null) {
+async function sendMail(message, transport = null) {
+  const smtpAccount = await getSmtpAccount();
   if (!transport) {
-    transport = getTransporter(config.smtp);
+    transport = getTransporter(smtpAccount);
   }
   transport.sendMail(message, handleMailSent);
 }

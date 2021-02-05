@@ -50,6 +50,15 @@ The contents of this file will be the contents of your email.
 
 You can also create a file called `subject.txt` to customize the subject of the message.
 
+## Testing your emails
+
+By default Foxy Subscription Alert comes with the `testMode` set to `true`. You can set it to false in the `config.js` file.
+
+While it is set to true, instead of sending emails to your users, it will send emails to a test account it will setup for you automatically with the help of Ethereal mail.
+
+It will display a helpful message with the link to access your test account, a user and a password.
+
+
 ## Composing emails
 
 You can compose your emails in plain text, HTML or MJML. If you don't provide a plain text version, one will be automatically created for you.
