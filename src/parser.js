@@ -30,6 +30,7 @@ function restrictVariables(data) {
         }))
       : [],
     start_date: data.start_date,
+    next_date: data.next_date,
     end_date: data.end_date,
     frequency: data.frequency,
     currency: data.transaction.currency,

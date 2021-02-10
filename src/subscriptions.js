@@ -94,6 +94,7 @@ function getApi(cfg = Config) {
 }
 
 /**
+ * Creates a subscription object that integrates information on the subscription, the customer, the transaction and the items.
  *
  * @param {FxSubscription} apiSub
  * @returns {Subscription}
@@ -101,6 +102,7 @@ function getApi(cfg = Config) {
 function apiSubscription2Subscription(apiSub) {
   return {
     start_date: apiSub.start_date,
+    next_date: apiSub.next_transaction_date,
     end_date: apiSub.end_date,
     frequency: apiSub.frequency,
     customer: apiSub2Customer(apiSub),

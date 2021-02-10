@@ -116,6 +116,7 @@ Here are the variables you will have available when writing your email templates
 | items[0].name       | the name of the first item in the subscription.               |
 | items[0].price      | the price of the first item in the subscription.              |
 | start_date          | the start date of the subscription.                           |
+| next_date           | the next transaction date of the subscription.                |
 | end_date            | the end date of the subscription.                             |
 | frequency           | frequency of the subscription payments.                       |
 | total               | The total payment for the original transaction.               |
