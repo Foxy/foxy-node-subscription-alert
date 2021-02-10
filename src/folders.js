@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { config } from "../config.js";
+const fs = require("fs");
+const path = require("path");
+const { config } = require("../config.js");
 
 /**
  * FileObject A file object with its contents and type
@@ -128,7 +128,11 @@ function buildFolder(folder) {
   }
 }
 
-export const Folders = {
+const Folders = {
   getFolders,
   findFolders,
+};
+
+module.exports = {
+  Folders,
 };

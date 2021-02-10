@@ -1,5 +1,7 @@
-import { config } from "../config.js";
-import * as FoxySDK from "@foxy.io/sdk";
+const { config } = require("../config.js");
+const FoxySDK = require("@foxy.io/sdk");
+const fs = require("fs");
+const path = require("path");
 
 const Config = config;
 
@@ -30,12 +32,25 @@ const Config = config;
  * @returns {Promise<*>}
  */
 async function getSubscriptions(days, status = "any", api = getApi()) {
-  return (await fetchSubscriptions(days, status, api)).map(
-    apiSubscription2Subscription
-  );
+  let fetched;
+  if (config.testMode) {
+    fetched = new Promise((resolve, reject) => {
+      fs.readFile(
+        path.resolve(__dirname, "example.json"),
+        "UTF-8",
+        (err, content) => {
+          if (err) reject(err);
+          else resolve(JSON.parse(content));
+        }
+      );
+    });
+  } else {
+    fetched = fetchSubscriptions(days, status, api);
+  }
+  return (await fetched).map(apiSubscription2Subscription);
 }
 
-export async function fetchSubscriptions(days, status, api = getApi()) {
+async function fetchSubscriptions(days, status, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
@@ -51,13 +66,13 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
     options.zoom.is_active = status === "active";
   }
   try {
-  const subscriptionsResponse = await api
-    .follow("fx:store")
-    .follow("fx:subscriptions")
-    .get(options);
-  const subscriptions = await subscriptionsResponse.json();
-  return subscriptions["_embedded"]["fx:subscriptions"];
-  } catch(e) {
+    const subscriptionsResponse = await api
+      .follow("fx:store")
+      .follow("fx:subscriptions")
+      .get(options);
+    const subscriptions = await subscriptionsResponse.json();
+    return subscriptions["_embedded"]["fx:subscriptions"];
+  } catch (e) {
     console.error(e);
   }
 }
@@ -142,7 +157,12 @@ function apiSub2Items(apiSub) {
   }));
 }
 
-export const Subscriptions = {
+const Subscriptions = {
   getSubscriptions,
   apiSubscription2Subscription,
+};
+
+module.exports = {
+  fetchSubscriptions,
+  Subscriptions,
 };

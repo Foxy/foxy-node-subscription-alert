@@ -1,11 +1,20 @@
-import { config } from "./config.js";
-import { Folders } from "./src/folders.js";
-import { Parser } from "./src/parser.js";
-import { Subscriptions } from "./src/subscriptions.js";
-import { getSmtpAccount } from "./src/smtp.js";
-import nodemailer from "nodemailer";
+const { config } = require("./config.js");
+const { Folders } = require("./src/folders.js");
+const { Parser } = require("./src/parser.js");
+const { Subscriptions } = require("./src/subscriptions.js");
+const { getSmtpAccount } = require("./src/smtp.js");
+const nodemailer = require("nodemailer");
 
 const cfg = config;
+
+// Test should be true even if testMode is set to false if the command line argument "test" is provided.
+if (process.argv.length > 3) {
+  throw new Error("Only one command line argument is allowed.");
+}
+if (process.argv[2] === "test") {
+  cfg.testMode = true;
+}
+
 /**
  * Creates a transport agent with the given configuration.
  *
