@@ -52,15 +52,30 @@ You can also create a file called `subject.txt` to customize the subject of the 
 
 ## Testing your emails
 
-By default, Foxy Subscription Alert comes with the `testMode` set to `true`. You can set it to false in the `config.js` file.
+By default, Foxy Subscription Alert comes with the `testing.enabled` set to `true`. You can set it to false in the `config.js` file.
 
-While it is set to true, instead of sending emails to your users, it will send emails to a test account it will setup for you automatically with the help of Ethereal mail.
+While it is set to true, instead of sending emails to your users, it will send emails to a test account.
 
-It will display a helpful message with the link to access your test account, a user and a password. After loggin in to your test accout, click on "Messages" in the top menu in order to read the test emails.
 
-### Testing with testMode set to false
+### Where do I see the test emails?
 
-You can always test new emails by simply using the `test` command line argument:
+You can either set up an email account to receive the test emails (or use your own), or you can use an Ethereal mail that is automatically created to allow you to easily view your test emails.
+
+#### Using Ethereal mail
+In the `config.js` file there is an option called `autoGenerateTestEmail`. If it is set to true the application will set a testing account for you automatically in Ethereal Mail and display the login url, name and password for you to view your test emails.
+
+It will display a helpful message with the link to access your test account, a user and a password. After logging in to your test account, click on "Messages" in the top menu in order to read the test emails.
+
+**Notice:** when using Ethereal mail your SMTP configuration is not used. This means that the fact that these tests work **do not mean that your SMTP configuration is correct**.
+Please, double check your SMTP configuration if you are not getting your emails.
+
+#### Using your own test email address
+
+In the `config.js` file there is an option called `autoGenerateTestEmail`. Set it to `false` and set `customTestEmail` to the email where you would like to receive the tests.
+
+### Testing with testing disabled
+
+If you need to send a test email, but does not wish to (or can't) change the config file, you can always test new emails by simply using the `test` command line argument:
 
 ```bash
 #send real emails

@@ -31,7 +31,10 @@ let __testAccount = null;
 async function getSmtpAccount(cfg = config) {
   const smtpAccount = cfg.smtp;
   let testAccount;
-  if (cfg.testMode === true) {
+  if (
+    cfg.testing.enabled === true &&
+    cfg.testing.autoGenerateTestEmail === true
+  ) {
     if (__testAccount === null) {
       testAccount = await getTestAccount();
       console.log("#############################################");

@@ -28,7 +28,13 @@ const config = {
     clientId: "",
   },
   // If set to true, will only send test emails
-  testMode: false,
+  testing: {
+    enabled: true,
+    // If set to true, will use an automatically generated mailbox to receive the emails
+    // If set to false, you will receive the messages in the email set in the customTestEmail bellow
+    autoGenerateTestEmail: true,
+    customTestEmail: "example@example.tld",
+  },
   // Configure the triggers
   triggers: {
     daysAhead: [14, 7, 2],

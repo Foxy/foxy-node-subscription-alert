@@ -7,12 +7,12 @@ const nodemailer = require("nodemailer");
 
 const cfg = config;
 
-// Test should be true even if testMode is set to false if the command line argument "test" is provided.
+// Test should be true even if testing.enabled is set to false if the command line argument "test" is provided.
 if (process.argv.length > 3) {
   throw new Error("Only one command line argument is allowed.");
 }
 if (process.argv[2] === "test") {
-  cfg.testMode = true;
+  cfg.testing.enabled = true;
 }
 
 /**
@@ -39,7 +39,7 @@ function handleMailSent(err, info) {
   else console.log("Successfully sent mail:", info);
 }
 
-async function sendEmailAlerts() {
+async function sendEmailAlerts(config = cfg) {
   const folders = Folders.findFolders();
   for (let folder of folders) {
     console.assert(["within", "past"].includes(folder.type));
@@ -51,7 +51,10 @@ async function sendEmailAlerts() {
     const messages = subscriptions.map((subscription) =>
       Parser.folder2message(folder, subscription)
     );
-    messages.forEach((m) => sendMail(m));
+    messages.forEach((m) => {
+      m.to = cfg.testing.enabled ? cfg.testing.customTestEmail : m.to;
+      sendMail(m);
+    });
   }
 }
 
