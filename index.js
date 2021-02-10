@@ -53,6 +53,12 @@ async function sendEmailAlerts(config = cfg) {
     );
     messages.forEach((m) => {
       m.to = cfg.testing.enabled ? cfg.testing.customTestEmail : m.to;
+      if (cfg.cc.length) {
+        m.cc = cfg.cc;
+      }
+      if (cfg.bcc.length) {
+        m.bcc = cfg.bcc;
+      }
       sendMail(m);
     });
   }

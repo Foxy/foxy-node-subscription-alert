@@ -11,6 +11,10 @@ const config = {
   // From address
   // Be very careful to use only legitimate email address in the field bellow. Your server may blacklisted if you fail to do this.
   from: "example@example.com",
+  // Add a list of email addresses to receive a copy of emails sent.
+  cc: ["nelson@ocastudios.com"],
+  // Add a list of email addresses to receive a blind copy of emails sent.
+  bcc: ["nelsondovale@gmail.com"],
   // Configure your Simple Mail Transport Protocol - SMTP
   smtp: {
     host: "smtp.ethereal.email",
