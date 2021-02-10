@@ -1,4 +1,4 @@
-const { config } = require("../config.js");
+const config = require("../config.js");
 const FoxySDK = require("@foxy.io/sdk");
 const fs = require("fs");
 const path = require("path");
@@ -33,7 +33,7 @@ const Config = config;
  */
 async function getSubscriptions(days, status = "any", api = getApi()) {
   let fetched;
-  if (config.testMode) {
+  if (config.testing.enabled) {
     fetched = new Promise((resolve, reject) => {
       fs.readFile(
         path.resolve(__dirname, "example.json"),

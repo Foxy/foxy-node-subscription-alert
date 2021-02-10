@@ -95,7 +95,7 @@ Note: all emails are related to a single subscription.
 
 ### Using variables
 
-You can use the Twig templating language to compose your emails.
+You can use the [Twig templating language](https://twig.symfony.com/doc/3.x/templates.html) to compose your emails.
 
 If you are not familiar with Twig, this might help:
 
@@ -129,6 +129,11 @@ Building a consistent, responsive look and feel involves using many of the old p
 
 [**mjml**](https://github.com/mjmlio/mjml) helps you build your templates using a markup language designed to handle these issues.
 It also offers an [online editor](https://mjml.io/try-it-live) and a [desktop client](https://mjmlio.github.io/mjml-app/).
+
+### Advanced usage
+
+- You can use Twig to achieve some advanced features. Twig offers functions such as `date`, `max` and `min` and also offers filters you can take advantage of.
+- You can use Twig control flow to avoid sending emails under custom circumstances. Use `{% if variable %}...{% endif %}` so that the body (both txt and html) or the subject is empty. The application will not send emails with empty body or subject.
 
 # Dependencies
 

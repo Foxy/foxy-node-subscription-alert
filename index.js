@@ -1,4 +1,4 @@
-const { config } = require("./config.js");
+const config = require("./config.js");
 const { Folders } = require("./src/folders.js");
 const Parser = require("./src/parser.js");
 const { Subscriptions } = require("./src/subscriptions.js");
@@ -31,7 +31,7 @@ async function sendMail(message, transport = null) {
   if (!transport) {
     transport = getTransporter(smtpAccount);
   }
-  transport.sendMail(message, handleMailSent);
+  await transport.sendMail(message, handleMailSent);
 }
 
 function handleMailSent(err, info) {
@@ -39,7 +39,32 @@ function handleMailSent(err, info) {
   else console.log("Successfully sent mail:", info);
 }
 
-async function sendEmailAlerts(config = cfg) {
+function processSubscriptions(folder, subscriptions, config = cfg) {
+  return subscriptions
+    .map((subscription) => Parser.folder2message(folder, subscription))
+    .filter(
+      // avoid sending messages with empty body
+      (m) => {
+        return !(m.html.match(/^\s*$/) && m.text.match(/^\s*$/));
+      }
+    )
+    .filter(
+      // avoid sending messages with empty subject
+      (m) => !m.subject.match(/^\s*$/)
+    )
+    .map((m) => {
+      m.to = config.testing.enabled ? config.testing.customTestEmail : m.to;
+      if (config.cc.length) {
+        m.cc = config.cc;
+      }
+      if (config.bcc.length) {
+        m.bcc = config.bcc;
+      }
+      return m;
+    });
+}
+
+async function sendEmailAlerts() {
   const folders = Folders.findFolders();
   for (let folder of folders) {
     console.assert(["within", "past"].includes(folder.type));
@@ -48,19 +73,8 @@ async function sendEmailAlerts(config = cfg) {
       days,
       folder.status
     );
-    const messages = subscriptions.map((subscription) =>
-      Parser.folder2message(folder, subscription)
-    );
-    messages.forEach((m) => {
-      m.to = cfg.testing.enabled ? cfg.testing.customTestEmail : m.to;
-      if (cfg.cc.length) {
-        m.cc = cfg.cc;
-      }
-      if (cfg.bcc.length) {
-        m.bcc = cfg.bcc;
-      }
-      sendMail(m);
-    });
+    const messages = processSubscriptions(folder, subscriptions);
+    messages.forEach(sendMail);
   }
 }
 

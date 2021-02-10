@@ -1,7 +1,7 @@
 const Twig = require("twig");
 const mjml2html = require("mjml");
 const { htmlToText } = require("html-to-text");
-const { config } = require("../config.js");
+const config = require("../config.js");
 
 /**
  * Given an object, returns a stripped down version with only the variables that should be available for the email template.
