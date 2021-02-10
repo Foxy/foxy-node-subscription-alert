@@ -1,6 +1,6 @@
 const { config } = require("./config.js");
 const { Folders } = require("./src/folders.js");
-const { Parser } = require("./src/parser.js");
+const Parser = require("./src/parser.js");
 const { Subscriptions } = require("./src/subscriptions.js");
 const { getSmtpAccount } = require("./src/smtp.js");
 const nodemailer = require("nodemailer");

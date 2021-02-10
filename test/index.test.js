@@ -4,7 +4,7 @@ const {
   Subscriptions,
 } = require("../src/subscriptions.js");
 const { Folders } = require("../src/folders.js");
-const { Parser } = require("../src/parser.js");
+const Parser = require("../src/parser.js");
 
 const chai = require("chai");
 

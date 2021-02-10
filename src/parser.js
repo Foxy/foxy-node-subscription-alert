@@ -91,6 +91,4 @@ const Parser = {
   folder2message,
 };
 
-module.exports = {
-  Parser,
-};
+module.exports = Parser;
