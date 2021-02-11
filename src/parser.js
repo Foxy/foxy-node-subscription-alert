@@ -1,7 +1,7 @@
-import Twig from "twig";
-import mjml2html from "mjml";
-import { htmlToText } from "html-to-text";
-import { config } from "../config.js";
+const Twig = require("twig");
+const mjml2html = require("mjml");
+const { htmlToText } = require("html-to-text");
+const config = require("../config.js");
 
 /**
  * Given an object, returns a stripped down version with only the variables that should be available for the email template.
@@ -30,6 +30,7 @@ function restrictVariables(data) {
         }))
       : [],
     start_date: data.start_date,
+    next_date: data.next_date,
     end_date: data.end_date,
     frequency: data.frequency,
     currency: data.transaction.currency,
@@ -42,7 +43,7 @@ function restrictVariables(data) {
  * @param {MailFolder} message: the message to be sent.
  * @param {Subscription} subscription data retrieved from the API
  * @param {Object?} cfg: Optional. the configuration object to be used. The default configuration will be used if none is provided.
- * @returns {{txt: string, html: string, subject: string}}
+ * @returns {{text: string, html: string, subject: string}}
  */
 function folder2message(message, subscription, cfg = config) {
   const html = message.files.mjml
@@ -50,12 +51,12 @@ function folder2message(message, subscription, cfg = config) {
     : message.files.html
     ? message.files.html.content
     : "";
-  const txt = message.files.txt
+  const text = message.files.txt
     ? message.files.txt.content
     : plainTextVersion(html);
   const subject = plainTextVersion(message.subject);
   return {
-    txt: processVariables(txt, subscription),
+    text: processVariables(text, subscription),
     html: processVariables(html, subscription),
     subject: processVariables(subject, subscription),
     to: plainTextVersion(subscription.customer.email),
@@ -84,9 +85,11 @@ function processVariables(content, variables) {
   return Twig.twig({ data: content }).render(restricted);
 }
 
-export const Parser = {
+const Parser = {
   processVariables,
   html2text: plainTextVersion,
   mjml2html: processMjml,
   folder2message,
 };
+
+module.exports = Parser;

@@ -16,7 +16,6 @@
   ],
   "author": "Foxy.io",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "@foxy.io/eslint-config": "^1.0.0",
     "c8": "^7.4.0",

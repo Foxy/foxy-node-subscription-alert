@@ -1,5 +1,7 @@
-import { config } from "../config.js";
-import * as FoxySDK from "@foxy.io/sdk";
+const config = require("../config.js");
+const FoxySDK = require("@foxy.io/sdk");
+const fs = require("fs");
+const path = require("path");
 
 const Config = config;
 
@@ -30,12 +32,25 @@ const Config = config;
  * @returns {Promise<*>}
  */
 async function getSubscriptions(days, status = "any", api = getApi()) {
-  return (await fetchSubscriptions(days, status, api)).map(
-    apiSubscription2Subscription
-  );
+  let fetched;
+  if (config.testing.enabled) {
+    fetched = new Promise((resolve, reject) => {
+      fs.readFile(
+        path.resolve(__dirname, "example.json"),
+        "UTF-8",
+        (err, content) => {
+          if (err) reject(err);
+          else resolve(JSON.parse(content));
+        }
+      );
+    });
+  } else {
+    fetched = fetchSubscriptions(days, status, api);
+  }
+  return (await fetched).map(apiSubscription2Subscription);
 }
 
-export async function fetchSubscriptions(days, status, api = getApi()) {
+async function fetchSubscriptions(days, status, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
@@ -50,12 +65,16 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
   if (status !== "any") {
     options.zoom.is_active = status === "active";
   }
-  const subscriptionsResponse = await api
-    .follow("fx:store")
-    .follow("fx:subscriptions")
-    .get(options);
-  const subscriptions = await subscriptionsResponse.json();
-  return subscriptions["_embedded"]["fx:subscriptions"];
+  try {
+    const subscriptionsResponse = await api
+      .follow("fx:store")
+      .follow("fx:subscriptions")
+      .get(options);
+    const subscriptions = await subscriptionsResponse.json();
+    return subscriptions["_embedded"]["fx:subscriptions"];
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -68,13 +87,14 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
  */
 function getApi(cfg = Config) {
   return new FoxySDK.Integration.API({
-    refreshToken: cfg.store.refreshToken,
-    clientSecret: cfg.store.clientSecret,
-    clientId: cfg.store.clientId,
+    refreshToken: cfg.store.refreshToken || cfg.store.refresh_token,
+    clientSecret: cfg.store.clientSecret || cfg.store.client_secret,
+    clientId: cfg.store.clientId || cfg.store.refresh_id,
   });
 }
 
 /**
+ * Creates a subscription object that integrates information on the subscription, the customer, the transaction and the items.
  *
  * @param {FxSubscription} apiSub
  * @returns {Subscription}
@@ -82,6 +102,7 @@ function getApi(cfg = Config) {
 function apiSubscription2Subscription(apiSub) {
   return {
     start_date: apiSub.start_date,
+    next_date: apiSub.next_transaction_date,
     end_date: apiSub.end_date,
     frequency: apiSub.frequency,
     customer: apiSub2Customer(apiSub),
@@ -138,7 +159,12 @@ function apiSub2Items(apiSub) {
   }));
 }
 
-export const Subscriptions = {
+const Subscriptions = {
   getSubscriptions,
   apiSubscription2Subscription,
+};
+
+module.exports = {
+  fetchSubscriptions,
+  Subscriptions,
 };

@@ -50,17 +50,52 @@ The contents of this file will be the contents of your email.
 
 You can also create a file called `subject.txt` to customize the subject of the message.
 
+## Testing your emails
+
+By default, Foxy Subscription Alert comes with the `testing.enabled` set to `true`. You can set it to false in the `config.js` file.
+
+While it is set to true, instead of sending emails to your users, it will send emails to a test account.
+
+
+### Where do I see the test emails?
+
+You can either set up an email account to receive the test emails (or use your own), or you can use an Ethereal mail that is automatically created to allow you to easily view your test emails.
+
+#### Using Ethereal mail
+In the `config.js` file there is an option called `autoGenerateTestEmail`. If it is set to true the application will set a testing account for you automatically in Ethereal Mail and display the login url, name and password for you to view your test emails.
+
+It will display a helpful message with the link to access your test account, a user and a password. After logging in to your test account, click on "Messages" in the top menu in order to read the test emails.
+
+**Notice:** when using Ethereal mail your SMTP configuration is not used. This means that the fact that these tests work **do not mean that your SMTP configuration is correct**.
+Please, double check your SMTP configuration if you are not getting your emails.
+
+#### Using your own test email address
+
+In the `config.js` file there is an option called `autoGenerateTestEmail`. Set it to `false` and set `customTestEmail` to the email where you would like to receive the tests.
+
+### Testing with testing disabled
+
+If you need to send a test email, but does not wish to (or can't) change the config file, you can always test new emails by simply using the `test` command line argument:
+
+```bash
+#send real emails
+node index.js
+#send test emails
+node index.js test
+```
+
+
 ## Composing emails
 
 You can compose your emails in plain text, HTML or MJML. If you don't provide a plain text version, one will be automatically created for you.
 
-Pro tip: consider using MJML to send responsive emails that will look nice everywhere.
+Pro-tip: consider using MJML to send responsive emails that will look nice everywhere.
 
 Note: all emails are related to a single subscription.
 
 ### Using variables
 
-You can use the Twig templating language to compose your emails.
+You can use the [Twig templating language](https://twig.symfony.com/doc/3.x/templates.html) to compose your emails.
 
 If you are not familiar with Twig, this might help:
 
@@ -81,6 +116,7 @@ Here are the variables you will have available when writing your email templates
 | items[0].name       | the name of the first item in the subscription.               |
 | items[0].price      | the price of the first item in the subscription.              |
 | start_date          | the start date of the subscription.                           |
+| next_date           | the next transaction date of the subscription.                |
 | end_date            | the end date of the subscription.                             |
 | frequency           | frequency of the subscription payments.                       |
 | total               | The total payment for the original transaction.               |
@@ -93,6 +129,11 @@ Building a consistent, responsive look and feel involves using many of the old p
 
 [**mjml**](https://github.com/mjmlio/mjml) helps you build your templates using a markup language designed to handle these issues.
 It also offers an [online editor](https://mjml.io/try-it-live) and a [desktop client](https://mjmlio.github.io/mjml-app/).
+
+### Advanced usage
+
+- You can use Twig to achieve some advanced features. Twig offers functions such as `date`, `max` and `min` and also offers filters you can take advantage of.
+- You can use Twig control flow to avoid sending emails under custom circumstances. Use `{% if variable %}...{% endif %}` so that the body (both txt and html) or the subject is empty. The application will not send emails with empty body or subject.
 
 # Dependencies
 

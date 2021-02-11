@@ -1,9 +1,12 @@
-import * as FoxySDK from "@foxy.io/sdk";
-import { fetchSubscriptions, Subscriptions } from "../src/subscriptions.js";
-import { Folders } from "../src/folders.js";
-import { Parser } from "../src/parser.js";
+const FoxySDK = require("@foxy.io/sdk");
+const {
+  fetchSubscriptions,
+  Subscriptions,
+} = require("../src/subscriptions.js");
+const { Folders } = require("../src/folders.js");
+const Parser = require("../src/parser.js");
 
-import chai from "chai";
+const chai = require("chai");
 
 const expect = chai.expect;
 

@@ -1,0 +1,237 @@
+[
+  {
+    "_links": {
+      "curies": [
+        {
+          "name": "fx",
+          "href": "https://api.foxycart.com/rels/{rel}",
+          "templated": true
+        }
+      ],
+      "self": {
+        "href": "https://api.foxycart.com/subscriptions/524523",
+        "title": "This Subscription"
+      },
+      "fx:attributes": {
+        "href": "https://api.foxycart.com/subscriptions/524523/attributes",
+        "title": "Attributes for This Subscription"
+      },
+      "fx:store": {
+        "href": "https://api.foxycart.com/stores/57428",
+        "title": "This Store"
+      },
+      "fx:customer": {
+        "href": "https://api.foxycart.com/customers/29913857",
+        "title": "This Customer"
+      },
+      "fx:original_transaction": {
+        "href": "https://api.foxycart.com/transactions/1755896683",
+        "title": "Original Transaction"
+      },
+      "fx:transactions": {
+        "href": "https://api.foxycart.com/stores/57428/transactions?subscription_id=524523",
+        "title": "Transactions for this Subscription"
+      },
+      "fx:last_transaction": {
+        "href": "https://api.foxycart.com/transactions/1776614300",
+        "title": "Last Transaction"
+      },
+      "fx:transaction_template": {
+        "href": "https://api.foxycart.com/carts/1755899656",
+        "title": "Transaction Template"
+      },
+      "fx:sub_token_url": {
+        "href": "https://ndvo.foxycart.com/cart?sub_token=02d4844bf369a0e3c4bc4d231f6fe4dcc9927534177854c5b0b8cdbf4f50e97f",
+        "title": "This Sub Token",
+        "type": "text/html"
+      }
+    },
+    "_embedded": {
+      "fx:customer": {
+        "_links": {
+          "curies": [
+            {
+              "name": "fx",
+              "href": "https://api.foxycart.com/rels/{rel}",
+              "templated": true
+            }
+          ],
+          "self": {
+            "href": "https://api.foxycart.com/customers/29913857",
+            "title": "This Customer"
+          },
+          "fx:attributes": {
+            "href": "https://api.foxycart.com/customers/29913857/attributes",
+            "title": "Attributes for this Customer"
+          },
+          "fx:store": {
+            "href": "https://api.foxycart.com/stores/57428",
+            "title": "This Store"
+          },
+          "fx:default_billing_address": {
+            "href": "https://api.foxycart.com/customers/29913857/default_billing_address",
+            "title": "Default Billing Address for this Customer"
+          },
+          "fx:default_shipping_address": {
+            "href": "https://api.foxycart.com/customers/29913857/default_shipping_address",
+            "title": "Default Shipping Address for this Customer"
+          },
+          "fx:default_payment_method": {
+            "href": "https://api.foxycart.com/customers/29913857/default_payment_method",
+            "title": "Default Payment Method for this Customer"
+          },
+          "fx:transactions": {
+            "href": "https://api.foxycart.com/stores/57428/transactions?customer_id=29913857",
+            "title": "Transactions for this Customer"
+          },
+          "fx:subscriptions": {
+            "href": "https://api.foxycart.com/stores/57428/subscriptions?customer_id=29913857",
+            "title": "Subscriptions for this Customer"
+          },
+          "fx:customer_addresses": {
+            "href": "https://api.foxycart.com/customers/29913857/addresses",
+            "title": "Addresses for this Customer"
+          }
+        },
+        "id": 29913857,
+        "last_login_date": "2010-01-13T12:00:00-0000",
+        "first_name": "FooFirstName",
+        "last_name": "BarLastName",
+        "email": "foo-bar@example.com",
+        "tax_id": "12341234",
+        "password_salt": "pwdSalt",
+        "password_hash": "$P$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "password_hash_type": "phpass",
+        "password_hash_config": "8",
+        "forgot_password": "",
+        "forgot_password_timestamp": null,
+        "is_anonymous": false,
+        "date_created": "2010-01-13T12:00:00-0000",
+        "date_modified": "2010-01-13T12:00:00-0000",
+        "_embedded": {}
+      },
+      "fx:original_transaction": {
+        "_links": {},
+        "_embedded": {
+          "fx:items": [
+            {
+              "_links": {
+                "curies": [
+                  {
+                    "name": "fx",
+                    "href": "https://api.foxycart.com/rels/{rel}",
+                    "templated": true
+                  }
+                ],
+                "self": {
+                  "href": "https://api.foxycart.com/items/115215247",
+                  "title": "This Item"
+                },
+                "fx:store": {
+                  "href": "https://api.foxycart.com/stores/57428",
+                  "title": "This Store"
+                },
+                "fx:transaction": {
+                  "href": "https://api.foxycart.com/transactions/1755896683",
+                  "title": "This Transaction"
+                },
+                "fx:item_category": {
+                  "href": "https://api.foxycart.com/item_categories/101363",
+                  "title": "This Item Category"
+                },
+                "fx:subscription": {
+                  "href": "https://api.foxycart.com/subscriptions/524523",
+                  "title": "This Subscription"
+                },
+                "fx:item_options": {
+                  "href": "https://api.foxycart.com/items/115215247/item_options",
+                  "title": "Item Options for This Item"
+                },
+                "fx:shipment": {
+                  "href": "https://api.foxycart.com/transactions/1755896683/shipment",
+                  "title": "Shipment for this Item"
+                },
+                "fx:attributes": {
+                  "href": "https://api.foxycart.com/items/115215247/attributes",
+                  "title": "Attributes for This Item"
+                },
+                "fx:discount_details": {
+                  "href": "https://api.foxycart.com/items/115215247/discount_details",
+                  "title": "The Discounts for this Item"
+                },
+                "fx:coupon_details": {
+                  "href": "https://api.foxycart.com/items/115215247/coupon_details",
+                  "title": "The Coupons for this Item"
+                }
+              },
+              "item_category_uri": "https://api.foxycart.com/item_categories/101363",
+              "name": "Example Magazine Subscription",
+              "price": 19.99,
+              "quantity": 1,
+              "quantity_min": 0,
+              "quantity_max": 0,
+              "weight": 0,
+              "code": "21",
+              "parent_code": "",
+              "discount_name": "",
+              "discount_type": "",
+              "discount_details": "",
+              "subscription_frequency": "1m",
+              "subscription_start_date": "2010-01-13T12:00:00-0000",
+              "subscription_next_transaction_date": "2010-01-13T12:00:00-0000",
+              "subscription_end_date": null,
+              "is_future_line_item": false,
+              "shipto": "Ship to address",
+              "url": "http://example.com/item-url",
+              "image": "http://example.com/image-url",
+              "length": 0,
+              "width": 0,
+              "height": 0,
+              "expires": 0,
+              "date_created": null,
+              "date_modified": "2010-01-13T12:00:00-0000",
+              "_embedded": {}
+            }
+          ]
+        },
+        "id": 555555555,
+        "display_id": 1755896683,
+        "is_test": true,
+        "hide_transaction": false,
+        "data_is_fed": false,
+        "type": "transaction",
+        "transaction_date": "2010-01-13T12:00:00-0000",
+        "locale_code": "pt_BR",
+        "customer_first_name": "FooFirstName",
+        "customer_last_name": "BarLastName",
+        "customer_tax_id": "12341234",
+        "customer_email": "foo-bar@example.com",
+        "customer_ip": "0.0.0.0",
+        "ip_country": "United States",
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36",
+        "total_item_price": 19.99,
+        "total_tax": 0,
+        "total_shipping": 0,
+        "total_future_shipping": 0,
+        "total_order": 19.99,
+        "status": "",
+        "date_created": null,
+        "date_modified": "2010-01-13T12:00:00-0000",
+        "currency_code": "USD",
+        "currency_symbol": "$"
+      }
+    },
+    "start_date": "2010-01-13T12:00:00-0000",
+    "next_transaction_date": "2010-01-13T12:00:00-0000",
+    "end_date": null,
+    "frequency": "1m",
+    "error_message": "",
+    "past_due_amount": 0,
+    "first_failed_transaction_date": null,
+    "is_active": true,
+    "third_party_id": "",
+    "cancellation_source": "",
+    "date_created": "2010-01-13T12:00:00-0000",
+    "date_modified": "2010-01-13T12:00:00-0000"
+  }
+]
