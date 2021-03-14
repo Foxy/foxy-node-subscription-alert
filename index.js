@@ -54,3 +54,9 @@ async function sendEmailAlerts() {
 }
 
 sendEmailAlerts().then(() => console.log("done."));
+
+export const app = {
+  getTransporter,
+  sendMail,
+  sendEmailAlerts
+}
