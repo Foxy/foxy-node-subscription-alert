@@ -1,16 +1,19 @@
 import * as FoxySDK from "@foxy.io/sdk";
+import * as dotenv from "dotenv";
 import { fetchSubscriptions, Subscriptions } from "../src/subscriptions.js";
 import { Folders } from "../src/folders.js";
 import { Parser } from "../src/parser.js";
+
+dotenv.config();
 
 import chai from "chai";
 
 const expect = chai.expect;
 
 const testApi = new FoxySDK.Integration.API({
-  refreshToken: "PNxuKsfGIK3EmbriDMYHecqHN4MTawCTa1dPmjlV",
-  clientSecret: "F9tRBZBD4w5LspfRfd1phZ9arZQ75CRAFeh89JF3",
-  clientId: "client_S2uCyW4jie5Q2AVLLbVU",
+  refreshToken: process.env.FOXY_DEV_REFRESH_TOKEN,
+  clientSecret: process.env.FOXY_DEV_CLIENT_SECRET,
+  clientId: process.env.FOXY_DEV_CLIENT_ID,
 });
 
 // describe("Allows users to configure their Foxy accounts.");

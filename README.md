@@ -94,7 +94,19 @@ Building a consistent, responsive look and feel involves using many of the old p
 [**mjml**](https://github.com/mjmlio/mjml) helps you build your templates using a markup language designed to handle these issues.
 It also offers an [online editor](https://mjml.io/try-it-live) and a [desktop client](https://mjmlio.github.io/mjml-app/).
 
-# Dependencies
+# Development
+
+## Testing
+
+It is necessary to have a FoxyApi client to run the tests.
+
+Use the `.env` file to set your environment variables.
+
+    FOXY_DEV_REFRESH_TOKEN="your refreshToken"
+    FOXY_DEV_CLIENT_SECRET="your clientSecret"
+    FOXY_DEV_CLIENT_ID="your clientId"
+
+## Dependencies
 
 This project uses the following dependencies:
 
