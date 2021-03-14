@@ -16,6 +16,15 @@ function getTransporter(config = cfg.smtp) {
   return nodemailer.createTransport(config);
 }
 
+/**
+ * Sends a message by email using the given transport agent.
+ *
+ * If no transport agent is provided, creates a default transfort agent using
+ * the global config file.
+ *
+ * @param {Object} message to be sent.
+ * @param {Object} transport agent to be used to send the email.
+ */
 function sendMail(message, transport = null) {
   if (!transport) {
     transport = getTransporter(config.smtp);

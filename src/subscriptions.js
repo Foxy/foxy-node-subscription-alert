@@ -35,6 +35,13 @@ async function getSubscriptions(days, status = "any", api = getApi()) {
   );
 }
 
+/**
+ * Retrieve subscriptions with next transaction date within a given number of
+ * days and with a given status.
+ *
+ * @param {number} days the number of days from now to get subscriptions with next transaction dates.
+ * @param {api} the API instance to use.
+ */
 export async function fetchSubscriptions(days, status, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
@@ -63,7 +70,7 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
  *
  * If no config is provided, it uses the config from the config file.
  *
- * @param config configuration with the store details.
+ * @param {Object} config configuration with the store details.
  * @returns {API} the API instance.
  */
 function getApi(cfg = Config) {
