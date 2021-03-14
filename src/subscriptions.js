@@ -1,4 +1,5 @@
 import { config } from "../config.js";
+import * as EmailValidator from "email-validator";
 import * as FoxySDK from "@foxy.io/sdk";
 
 const Config = config;
@@ -74,11 +75,50 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
  * @returns {API} the API instance.
  */
 function getApi(cfg = Config) {
+  if (!isConfigValid(cfg)) {
+    throw new Error("Invalid configuration. Please, check config.js file.");
+  }
   return new FoxySDK.Integration.API({
     refreshToken: cfg.store.refreshToken,
     clientSecret: cfg.store.clientSecret,
     clientId: cfg.store.clientId,
   });
+}
+
+/**
+ * Verifies that a configuration object is valid.
+ *
+ * @param {{
+ *  from: string,
+ *  store: {refreshToken: string, clientSecret: string, clientid; string},
+ *  smtp: {host: string, port: string|number}
+ * }} cfg the configuration object to be validated.
+ *
+ * @returns {boolean} the configuration is valid.
+ */
+function isConfigValid(cfg) {
+  return cfg.from && EmailValidator.validate(cfg.from) &&
+    cfg.store && 
+    cfg.store.refreshToken &&
+    cfg.store.clientSecret &&
+    cfg.store.clientId &&
+    cfg.smtp &&
+    cfg.smtp.host &&
+    cfg.smtp.port;
+}
+
+/**
+ * Verifies that two objects have the same keys.
+ *
+ * This function checks only the attributes on the first level.
+ * 
+ * @param {Object} objA
+ * @param {Object} objB
+ * @returns {boolean} the two objects have the same keys
+ *
+*/
+function sameProperties(objA, objB) {
+  return Object.keys(objA).every((k) => objB.hasOwnProperty(k));
 }
 
 /**
