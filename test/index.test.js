@@ -3,6 +3,9 @@ import * as dotenv from "dotenv";
 import { fetchSubscriptions, Subscriptions } from "../src/subscriptions.js";
 import { Folders } from "../src/folders.js";
 import { Parser } from "../src/parser.js";
+import { config } from "../config.js";
+import { app } from "../index.js";
+const cfg = config;
 
 dotenv.config();
 
@@ -16,9 +19,29 @@ const testApi = new FoxySDK.Integration.API({
   clientId: process.env.FOXY_DEV_CLIENT_ID,
 });
 
-// describe("Allows users to configure their Foxy accounts.");
+describe("Allows users to configure their Foxy accounts.",  function () {
 
-// describe("Allows users to configure their SMTP details.");
+  it("reads foxy credentials from config file.", function () {
+    const api = Subscriptions.getApi();
+    expect(api.refreshToken).to.equal(cfg.store.refreshToken);
+    expect(api.clientSecret).to.equal(cfg.store.clientSecret);
+    expect(api.clientId).to.equal(cfg.store.clientId);
+  });
+
+});
+
+describe("Allows users to configure their SMTP details.",  function () {
+
+  it("reads smtp configuration from config file.", function () {
+    const transporter = app.getTransporter();
+    const mailOptions = transporter.options;
+    expect(mailOptions.host).to.equal(cfg.smtp.host);
+    expect(mailOptions.port).to.equal(cfg.smtp.port);
+    expect(mailOptions.auth.user).to.equal(cfg.smtp.auth.user);
+    expect(mailOptions.auth.pass).to.equal(cfg.smtp.auth.pass);
+  });
+
+});
 
 // describe("Allows users to configure the alert dates.");
 

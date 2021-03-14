@@ -188,4 +188,5 @@ function apiSub2Items(apiSub) {
 export const Subscriptions = {
   getSubscriptions,
   apiSubscription2Subscription,
+  getApi
 };
