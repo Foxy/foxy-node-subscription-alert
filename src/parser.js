@@ -4,7 +4,8 @@ import { htmlToText } from "html-to-text";
 import { config } from "../config.js";
 
 /**
- * Given an object, returns a stripped down version with only the variables that should be available for the email template.
+ * Given an object, returns a stripped down version with only the variables
+ * that should be available for the email template.
  *
  * @param data
  * @returns {{end_date: *, items: {price: *, name: *}[], customer: {last_name, first_name, email}, start_date: *, frequency: *, status: *}}
@@ -32,8 +33,8 @@ function restrictVariables(data) {
     start_date: data.start_date,
     end_date: data.end_date,
     frequency: data.frequency,
-    currency: data.transaction.currency,
-    total: data.transaction.total,
+    currency: data.transaction?.currency,
+    total: data.transaction?.total,
   };
 }
 

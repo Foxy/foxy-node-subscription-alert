@@ -43,7 +43,7 @@ async function getSubscriptions(days, status = "any", api = getApi()) {
  * @param {number} days the number of days from now to get subscriptions with next transaction dates.
  * @param {api} the API instance to use.
  */
-export async function fetchSubscriptions(days, status, api = getApi()) {
+export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
@@ -55,8 +55,8 @@ export async function fetchSubscriptions(days, status, api = getApi()) {
     },
     filters: [`next_transaction_date=${d1.toISOString()}..${d2.toISOString()}`],
   };
-  if (status !== "any") {
-    options.zoom.is_active = status === "active";
+  if (activeStatus !== "any") {
+    options.zoom.is_active = activeStatus === "active";
   }
   const subscriptionsResponse = await api
     .follow("fx:store")
