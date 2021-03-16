@@ -186,13 +186,14 @@ function apiSub2Customer(apiSub) {
  */
 function apiSub2Transaction(apiSub) {
   const tx = apiSub["_embedded"]["fx:original_transaction"];
-  if (!!tx) {
+  if (!tx) {
+    console.log(tx);
     throw new Error("Original transaction not found.");
   }
-  if (!!tx.total_order) {
+  if (!tx.total_order) {
     throw new Error("Original transaction does not contain the total order.");
   }
-  if (!!tx.currency_symbol) {
+  if (!tx.currency_symbol) {
     throw new Error("Original transaction does not specify a currency symbol..");
   }
   return {
