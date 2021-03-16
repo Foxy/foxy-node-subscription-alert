@@ -4,6 +4,16 @@ Allows automatically sending messages for subscribers at specific configurable d
 
 ## Usage
 
+### Configuring your Foxy credentials
+
+Edit the `config.js` folder in order to set up your credentials.
+
+There are comments within the file explaining each field that must be filled.
+
+In summary, you need to set up a refresToken, a clientSecret and a clientId.
+You can find your credentials in the Foxy.io admin page.
+
+### Configuring your email templates
 Sending alert emails can be as easy as creating a folder and some files.
 All you need to do is to create a folder with the messages you want to send and within this folder create your email template.
 
