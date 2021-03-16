@@ -5,7 +5,7 @@
  * to send the emails.
  */
 
-const config = {
+export const config = {
   // Email folder: the folder that contains the email files
   emailFolder: "emails",
   // From address
@@ -46,4 +46,3 @@ const config = {
   },
 };
 
-module.exports = config;

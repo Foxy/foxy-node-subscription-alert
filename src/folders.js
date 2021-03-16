@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const config = require("../config.js");
+import fs from "fs";
+import path from "path";
+import { config } from "../config.js";
 
 /**
  * FileObject A file object with its contents and type
@@ -32,12 +32,21 @@ const config = require("../config.js");
  */
 
 /**
- * Returns the available MailFolders in the config.emailFolder directory.
+ * Returns the folder that stores the emails to be sent.
+ *
+ * The folder can be customized in the config file.
+ */
+function getEmailFolder(cfg = config) {
+  return cfg.emailFolder;
+}
+
+/**
+ * Returns the available valid MailFolders.
  *
  * @returns {MailFolder[]}
  */
 function findFolders() {
-  return getFolders(fs.readdirSync(config.emailFolder));
+  return getValidFolders(fs.readdirSync(getEmailFolder()));
 }
 
 /**
@@ -46,8 +55,12 @@ function findFolders() {
  * @param {string[]} folderList the available folders.
  * @returns {MailFolder[]}
  */
-function getFolders(folderList) {
+function getValidFolders(folderList) {
+  if (folderList && folderList.length) {
   return folderList.filter(folderValid).map(buildFolder);
+  } else {
+    return [];
+  }
 }
 
 /**
@@ -60,7 +73,7 @@ function folderValid(folder) {
   if (!folder.match(/^((active|inactive)-)?(within|past)-\d+$/))
     // the folder name indicates how to send the emails
     return false;
-  const folderPath = path.join(config.emailFolder, folder);
+  const folderPath = path.join(getEmailFolder(), folder);
   if (!fs.lstatSync(folderPath).isDirectory())
     // it is a directory (not a file)
     return false;
@@ -106,7 +119,7 @@ function getSubject(folder) {
  * @returns {MailFolder}
  */
 function buildFolder(folder) {
-  const fullFolderPath = path.join(config.emailFolder, folder);
+  const fullFolderPath = path.join(getEmailFolder(), folder);
   const match = folder.match(
     /^(?<status>(active|inactive)-)?(?<type>[A-Za-z]+)-(?<days>\d+)$/
   );
@@ -128,11 +141,8 @@ function buildFolder(folder) {
   }
 }
 
-const Folders = {
-  getFolders,
+export const Folders = {
+  getEmailFolder,
+  getValidFolders,
   findFolders,
-};
-
-module.exports = {
-  Folders,
 };

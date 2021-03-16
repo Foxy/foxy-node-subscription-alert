@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "c8 mocha"
   },
@@ -22,11 +23,14 @@
     "chai": "^4.2.0",
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^8.2.0",
     "mocha": "^8.2.1",
+    "mock-fs": "^4.13.0",
     "prettier": "^2.2.1"
   },
   "dependencies": {
     "@foxy.io/sdk": "^1.0.0-beta.1",
+    "email-validator": "^2.0.4",
     "html-to-text": "^6.0.0",
     "mjml": "^4.8.1",
     "nodemailer": "^6.4.17",

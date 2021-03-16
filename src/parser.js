@@ -1,15 +1,19 @@
-const Twig = require("twig");
-const mjml2html = require("mjml");
-const { htmlToText } = require("html-to-text");
-const config = require("../config.js");
+import Twig from "twig";
+import mjml from "mjml";
+import { htmlToText } from "html-to-text";
+import { config } from "../config.js";
 
 /**
- * Given an object, returns a stripped down version with only the variables that should be available for the email template.
+ * Given an object, returns a stripped down version with only the variables
+ * that should be available for the email template.
  *
  * @param data
  * @returns {{end_date: *, items: {price: *, name: *}[], customer: {last_name, first_name, email}, start_date: *, frequency: *, status: *}}
  */
 function restrictVariables(data) {
+  if (!data) {
+    data = {};
+  }
   if (!data.customer) {
     data.customer = {};
   }
@@ -33,8 +37,8 @@ function restrictVariables(data) {
     next_date: data.next_date,
     end_date: data.end_date,
     frequency: data.frequency,
-    currency: data.transaction.currency,
-    total: data.transaction.total,
+    currency: data.transaction?.currency,
+    total: data.transaction?.total,
   };
 }
 
@@ -73,7 +77,7 @@ function folder2message(message, subscription, cfg = config) {
  * @returns {string} the html content.
  */
 function processMjml(content) {
-  return mjml2html(content, { validationLevel: "strict" });
+  return mjml(content, { validationLevel: "strict" });
 }
 
 function plainTextVersion(content) {
@@ -85,11 +89,10 @@ function processVariables(content, variables) {
   return Twig.twig({ data: content }).render(restricted);
 }
 
-const Parser = {
+export const Parser = {
   processVariables,
   html2text: plainTextVersion,
   mjml2html: processMjml,
   folder2message,
 };
 
-module.exports = Parser;

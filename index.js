@@ -1,12 +1,11 @@
-const config = require("./config.js");
-const { Folders } = require("./src/folders.js");
-const Parser = require("./src/parser.js");
-const { Subscriptions } = require("./src/subscriptions.js");
-const { getSmtpAccount } = require("./src/smtp.js");
-const nodemailer = require("nodemailer");
+import { config } from "./config.js";
+import { Folders } from "./src/folders.js";
+import { Parser } from "./src/parser.js";
+import { Subscriptions } from "./src/subscriptions.js";
+import { getSmtpAccount } from "./src/smtp.js";
+import nodemailer from "nodemailer";
 
 const cfg = config;
-
 // Test should be true even if testing.enabled is set to false if the command line argument "test" is provided.
 if (process.argv.length > 3) {
   throw new Error("Only one command line argument is allowed.");
@@ -14,7 +13,6 @@ if (process.argv.length > 3) {
 if (process.argv[2] === "test") {
   cfg.testing.enabled = true;
 }
-
 /**
  * Creates a transport agent with the given configuration.
  *
@@ -23,9 +21,19 @@ if (process.argv[2] === "test") {
  * @returns Object the transporter agent.
  */
 function getTransporter(config = cfg.smtp) {
-  return nodemailer.createTransport(config);
+  const transporter = nodemailer.createTransport(config);
+  return transporter;
 }
 
+/**
+ * Sends a message by email using the given transport agent.
+ *
+ * If no transport agent is provided, creates a default transfort agent using
+ * the global config file.
+ *
+ * @param {Object} message to be sent.
+ * @param {Object} transport agent to be used to send the email.
+ */
 async function sendMail(message, transport = null) {
   const smtpAccount = await getSmtpAccount();
   if (!transport) {
@@ -39,31 +47,6 @@ function handleMailSent(err, info) {
   else console.log("Successfully sent mail:", info);
 }
 
-function processSubscriptions(folder, subscriptions, config = cfg) {
-  return subscriptions
-    .map((subscription) => Parser.folder2message(folder, subscription))
-    .filter(
-      // avoid sending messages with empty body
-      (m) => {
-        return !(m.html.match(/^\s*$/) && m.text.match(/^\s*$/));
-      }
-    )
-    .filter(
-      // avoid sending messages with empty subject
-      (m) => !m.subject.match(/^\s*$/)
-    )
-    .map((m) => {
-      m.to = config.testing.enabled ? config.testing.customTestEmail : m.to;
-      if (config.cc.length) {
-        m.cc = config.cc;
-      }
-      if (config.bcc.length) {
-        m.bcc = config.bcc;
-      }
-      return m;
-    });
-}
-
 async function sendEmailAlerts() {
   const folders = Folders.findFolders();
   for (let folder of folders) {
@@ -73,9 +56,16 @@ async function sendEmailAlerts() {
       days,
       folder.status
     );
-    const messages = processSubscriptions(folder, subscriptions);
-    messages.forEach(sendMail);
+    const messages = subscriptions.map((subscription) =>
+      Parser.folder2message(folder, subscription)
+    );
+    messages.forEach((m) => sendMail(m));
   }
 }
 
 sendEmailAlerts().then(() => console.log("done."));
+export const app = {
+  getTransporter,
+  sendMail,
+  sendEmailAlerts
+}

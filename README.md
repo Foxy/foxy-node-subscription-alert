@@ -4,6 +4,25 @@ Allows automatically sending messages for subscribers at specific configurable d
 
 ## Usage
 
+### Configuring your Foxy credentials
+
+Edit the `config.js` folder in order to set up your credentials.
+
+There are comments within the file explaining each field that must be filled.
+
+In summary, you need to set up a refresToken, a clientSecret and a clientId.
+You can find your credentials in the Foxy.io admin page:
+
+1. Go to https://foxy.io and log in.
+1. Under "ACCOUNT", click "integrations.
+1. Under "Current integrations", click "Get token"
+1. Provide a project name and a project description. These fields are useful for you to remember what are these tokens used for.
+1. Copy the resulting credentials and paste in somewhere safe. 
+
+In `config.js` look for the fields with corresponding names. They sould be found in line 30. 
+Add your credentials to the respective key.
+
+### Configuring your email templates
 Sending alert emails can be as easy as creating a folder and some files.
 All you need to do is to create a folder with the messages you want to send and within this folder create your email template.
 
@@ -83,8 +102,6 @@ node index.js
 #send test emails
 node index.js test
 ```
-
-
 ## Composing emails
 
 You can compose your emails in plain text, HTML or MJML. If you don't provide a plain text version, one will be automatically created for you.
@@ -129,13 +146,24 @@ Building a consistent, responsive look and feel involves using many of the old p
 
 [**mjml**](https://github.com/mjmlio/mjml) helps you build your templates using a markup language designed to handle these issues.
 It also offers an [online editor](https://mjml.io/try-it-live) and a [desktop client](https://mjmlio.github.io/mjml-app/).
-
 ### Advanced usage
 
 - You can use Twig to achieve some advanced features. Twig offers functions such as `date`, `max` and `min` and also offers filters you can take advantage of.
 - You can use Twig control flow to avoid sending emails under custom circumstances. Use `{% if variable %}...{% endif %}` so that the body (both txt and html) or the subject is empty. The application will not send emails with empty body or subject.
 
-# Dependencies
+# Development
+
+## Testing
+
+It is necessary to have a FoxyApi client to run the tests.
+
+Use the `.env` file to set your environment variables.
+
+    FOXY_DEV_REFRESH_TOKEN="your refreshToken"
+    FOXY_DEV_CLIENT_SECRET="your clientSecret"
+    FOXY_DEV_CLIENT_ID="your clientId"
+
+## Dependencies
 
 This project uses the following dependencies:
 
