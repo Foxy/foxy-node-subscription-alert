@@ -12,6 +12,9 @@ import { config } from "../config.js";
  * @returns {{end_date: *, items: {price: *, name: *}[], customer: {last_name, first_name, email}, start_date: *, frequency: *, status: *}}
  */
 function restrictVariables(data) {
+  if (!data) {
+    data = {};
+  }
   if (!data.customer) {
     data.customer = {};
   }
