@@ -57,7 +57,7 @@ function findFolders() {
  */
 function getValidFolders(folderList) {
   if (folderList && folderList.length) {
-    return folderList.filter(folderValid).map(buildFolder);
+  return folderList.filter(folderValid).map(buildFolder);
   } else {
     return [];
   }

@@ -5,6 +5,13 @@ import { Subscriptions } from "./src/subscriptions.js";
 import nodemailer from "nodemailer";
 
 const cfg = config;
+// Test should be true even if testing.enabled is set to false if the command line argument "test" is provided.
+if (process.argv.length > 3) {
+  throw new Error("Only one command line argument is allowed.");
+}
+if (process.argv[2] === "test") {
+  cfg.testing.enabled = true;
+}
 /**
  * Creates a transport agent with the given configuration.
  *
@@ -25,11 +32,12 @@ function getTransporter(config = cfg.smtp) {
  * @param {Object} message to be sent.
  * @param {Object} transport agent to be used to send the email.
  */
-function sendMail(message, transport = null) {
+async function sendMail(message, transport = null) {
+  const smtpAccount = await getSmtpAccount();
   if (!transport) {
-    transport = getTransporter(config.smtp);
+    transport = getTransporter(smtpAccount);
   }
-  transport.sendMail(message, handleMailSent);
+  await transport.sendMail(message, handleMailSent);
 }
 
 function handleMailSent(err, info) {
@@ -54,7 +62,6 @@ async function sendEmailAlerts() {
 }
 
 sendEmailAlerts().then(() => console.log("done."));
-
 export const app = {
   getTransporter,
   sendMail,

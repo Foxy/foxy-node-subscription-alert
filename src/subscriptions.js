@@ -31,9 +31,22 @@ const Config = config;
  * @returns {Promise<*>}
  */
 async function getSubscriptions(days, status = "any", api = getApi()) {
-  return (await fetchSubscriptions(days, status, api)).map(
-    apiSubscription2Subscription
+  let fetched;
+  if (config.testing.enabled) {
+    fetched = new Promise((resolve, reject) => {
+      fs.readFile(
+        path.resolve(__dirname, "example.json"),
+        "UTF-8",
+        (err, content) => {
+          if (err) reject(err);
+          else resolve(JSON.parse(content));
+        }
   );
+    });
+  } else {
+    fetched = fetchSubscriptions(days, status, api);
+  }
+  return (await fetched).map(apiSubscription2Subscription);
 }
 
 /**
@@ -58,12 +71,16 @@ export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
   if (activeStatus !== "any") {
     options.zoom.is_active = activeStatus === "active";
   }
+  try {
   const subscriptionsResponse = await api
     .follow("fx:store")
     .follow("fx:subscriptions")
     .get(options);
   const subscriptions = await subscriptionsResponse.json();
   return subscriptions["_embedded"]["fx:subscriptions"];
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -79,9 +96,9 @@ function getApi(cfg = Config) {
     throw new Error("Invalid configuration. Please, check config.js file.");
   }
   return new FoxySDK.Integration.API({
-    refreshToken: cfg.store.refreshToken,
-    clientSecret: cfg.store.clientSecret,
-    clientId: cfg.store.clientId,
+    refreshToken: cfg.store.refreshToken || cfg.store.refresh_token,
+    clientSecret: cfg.store.clientSecret || cfg.store.client_secret,
+    clientId: cfg.store.clientId || cfg.store.refresh_id,
   });
 }
 
@@ -129,6 +146,7 @@ function sameProperties(objA, objB) {
 function apiSubscription2Subscription(apiSub) {
   return {
     start_date: apiSub.start_date,
+    next_date: apiSub.next_transaction_date,
     end_date: apiSub.end_date,
     frequency: apiSub.frequency,
     customer: apiSub2Customer(apiSub),

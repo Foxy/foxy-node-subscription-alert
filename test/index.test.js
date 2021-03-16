@@ -28,7 +28,7 @@ describe("Allows users to configure their Foxy accounts.",  function () {
     expect(api.clientId).to.equal(cfg.store.clientId);
   });
 
-});
+  });
 
 describe("Allows users to configure their SMTP details.",  function () {
 
@@ -41,6 +41,7 @@ describe("Allows users to configure their SMTP details.",  function () {
     expect(mailOptions.auth.pass).to.equal(cfg.smtp.auth.pass);
   });
 
+
 });
 
 describe("Sends emails in the appropriate dates", function () {
@@ -49,12 +50,12 @@ describe("Sends emails in the appropriate dates", function () {
     const api = new MockApi();
     for (const d of inDays) {
       const subscription = api.createSubscription({
-        next_transaction_date: inSomeDays(d).toISOString(),
+          next_transaction_date: inSomeDays(d).toISOString(),
       });
       api.setSubscriptions([ subscription ]);
       try{
         const transactions = await fetchSubscriptions(d, 'active', api);
-        expect(transactions.length).to.equal(1);
+      expect(transactions.length).to.equal(1);
       } catch (e) {
         console.log("Error", e);
       }
