@@ -1,6 +1,5 @@
 import Twig from "twig";
-import pkg from 'mjml';
-const { mjml2html } = pkg;
+import mjml from "mjml";
 import { htmlToText } from "html-to-text";
 import { config } from "../config.js";
 
@@ -78,7 +77,7 @@ function folder2message(message, subscription, cfg = config) {
  * @returns {string} the html content.
  */
 function processMjml(content) {
-  return mjml2html(content, { validationLevel: "strict" });
+  return mjml(content, { validationLevel: "strict" });
 }
 
 function plainTextVersion(content) {
