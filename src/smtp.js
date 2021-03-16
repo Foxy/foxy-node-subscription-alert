@@ -1,8 +1,8 @@
-const nodemailer = require("nodemailer");
-const config = require("../config.js");
-const fs = require("fs");
+import nodemailer from "nodemailer";
+import { config } from "../config.js";
+import fs from "fs";
 
-async function getTestAccount() {
+export async function getTestAccount() {
   const savedTestFile = ".testAccount.json";
   let testAccount;
   try {
@@ -28,7 +28,7 @@ async function getTestAccount() {
 }
 
 let __testAccount = null;
-async function getSmtpAccount(cfg = config) {
+export async function getSmtpAccount(cfg = config) {
   const smtpAccount = cfg.smtp;
   let testAccount;
   if (
@@ -54,7 +54,3 @@ async function getSmtpAccount(cfg = config) {
   }
   return smtpAccount;
 }
-
-module.exports = {
-  getSmtpAccount,
-};

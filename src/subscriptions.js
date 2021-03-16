@@ -1,8 +1,12 @@
 import { config } from "../config.js";
 import * as EmailValidator from "email-validator";
 import * as FoxySDK from "@foxy.io/sdk";
+import fs from "fs";
+import path from "path";
 
 const Config = config;
+
+const __dirname=fs.realpathSync('.');
 
 /**
  * @typedef Subscription
@@ -35,7 +39,7 @@ async function getSubscriptions(days, status = "any", api = getApi()) {
   if (config.testing.enabled) {
     fetched = new Promise((resolve, reject) => {
       fs.readFile(
-        path.resolve(__dirname, "example.json"),
+        path.resolve(__dirname, "src", "example.json"),
         "UTF-8",
         (err, content) => {
           if (err) reject(err);

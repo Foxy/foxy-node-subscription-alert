@@ -1,7 +1,8 @@
-const Twig = require("twig");
-const mjml2html = require("mjml");
-const { htmlToText } = require("html-to-text");
-const config = require("../config.js");
+import Twig from "twig";
+import pkg from 'mjml';
+const { mjml2html } = pkg;
+import { htmlToText } from "html-to-text";
+import { config } from "../config.js";
 
 /**
  * Given an object, returns a stripped down version with only the variables
@@ -86,11 +87,10 @@ function processVariables(content, variables) {
   return Twig.twig({ data: content }).render(restricted);
 }
 
-const Parser = {
+export const Parser = {
   processVariables,
   html2text: plainTextVersion,
   mjml2html: processMjml,
   folder2message,
 };
 
-module.exports = Parser;

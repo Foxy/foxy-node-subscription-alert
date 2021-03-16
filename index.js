@@ -2,6 +2,7 @@ import { config } from "./config.js";
 import { Folders } from "./src/folders.js";
 import { Parser } from "./src/parser.js";
 import { Subscriptions } from "./src/subscriptions.js";
+import { getSmtpAccount } from "./src/smtp.js";
 import nodemailer from "nodemailer";
 
 const cfg = config;
@@ -20,7 +21,8 @@ if (process.argv[2] === "test") {
  * @returns Object the transporter agent.
  */
 function getTransporter(config = cfg.smtp) {
-  return nodemailer.createTransport(config);
+  const transporter = nodemailer.createTransport(config);
+  return transporter;
 }
 
 /**
