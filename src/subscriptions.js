@@ -148,15 +148,19 @@ function sameProperties(objA, objB) {
  * @returns {Subscription}
  */
 function apiSubscription2Subscription(apiSub) {
-  return {
-    start_date: apiSub.start_date,
-    next_date: apiSub.next_transaction_date,
-    end_date: apiSub.end_date,
-    frequency: apiSub.frequency,
-    customer: apiSub2Customer(apiSub),
-    transaction: apiSub2Transaction(apiSub),
-    items: apiSub2Items(apiSub),
-  };
+  try {
+    return {
+      start_date: apiSub.start_date,
+      next_date: apiSub.next_transaction_date,
+      end_date: apiSub.end_date,
+      frequency: apiSub.frequency,
+      customer: apiSub2Customer(apiSub),
+      transaction: apiSub2Transaction(apiSub),
+      items: apiSub2Items(apiSub),
+    };
+  } catch (e) {
+    console.log('Could not build subscription object.' , e);
+  }
 }
 
 /**
@@ -182,6 +186,15 @@ function apiSub2Customer(apiSub) {
  */
 function apiSub2Transaction(apiSub) {
   const tx = apiSub["_embedded"]["fx:original_transaction"];
+  if (!!tx) {
+    throw new Error("Original transaction not found.");
+  }
+  if (!!tx.total_order) {
+    throw new Error("Original transaction does not contain the total order.");
+  }
+  if (!!tx.currency_symbol) {
+    throw new Error("Original transaction does not specify a currency symbol..");
+  }
   return {
     total: tx.total_order.toString(),
     currency: tx.currency_symbol,
