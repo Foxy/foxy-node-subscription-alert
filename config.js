@@ -24,6 +24,10 @@ export const config = {
       pass: "",
     },
     security: "STARTTLS",
+    sendmail: false, // Set this to true if you wish to use the installed sendmail. Leave as false if you are unsure
+    // Uncomment the lines bellow to configure your sendmail, if you set the above to true.
+    //newline: "unix", // You may set the newline style if you are using sendmail.
+    //path: "/usr/bin/sendmail" // You may set a custom sendamil path if you are using sendmail.
   },
   // Configure your Foxy store details
   store: {
