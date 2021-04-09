@@ -150,6 +150,8 @@ It also offers an [online editor](https://mjml.io/try-it-live) and a [desktop cl
 
 - You can use Twig to achieve some advanced features. Twig offers functions such as `date`, `max` and `min` and also offers filters you can take advantage of.
 - You can use Twig control flow to avoid sending emails under custom circumstances. Use `{% if variable %}...{% endif %}` so that the body (both txt and html) or the subject is empty. The application will not send emails with empty body or subject.
+- If your server is configured to use sendmail, you can set the `sendmail` configuration in `config.js` file to `true` for it to send emails using sendmail.
+
 
 # Development
 
