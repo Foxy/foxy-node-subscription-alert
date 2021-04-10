@@ -59,13 +59,19 @@ function folder2message(message, subscription, cfg = config) {
     ? message.files.txt.content
     : plainTextVersion(html);
   const subject = plainTextVersion(message.subject);
-  return {
-    text: processVariables(text, subscription),
-    html: processVariables(html, subscription),
-    subject: processVariables(subject, subscription),
-    to: plainTextVersion(subscription.customer.email),
-    from: plainTextVersion(cfg.from),
-  };
+  const result = {}
+  result.text = processVariables(text, subscription);
+  result.html = processVariables(html, subscription);
+  result.subject = processVariables(subject, subscription);
+  result.to = plainTextVersion(subscription.customer.email);
+  result.from = plainTextVersion(cfg.from);
+  if (cfg.cc && cfg.cc.length) {
+    result.cc = cfg.cc.join(', ');
+  }
+  if (cfg.bcc && cfg.bcc.length) {
+    result.bcc = cfg.bcc.join(', ');
+  }
+  return result;
 }
 
 /**

@@ -90,7 +90,6 @@ export class MockApi {
   }
 
   get() {
-    console.log("This are my subscriptions", this.subscriptions);
     switch (this.what) {
       case "fx:subscriptions":
         return Promise.resolve(
