@@ -66,11 +66,11 @@ export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
   const [a, b] = [d1.toISOString(), d2.toISOString()].map(i => i.replace(/T.*/,''));
   const options = {
+    filters: [`end_date=${a}..${b}`],
     zoom: {
       customer: ["first_name", "last_name", "email"],
       original_transaction: ["items"],
     },
-    filters: [`end_date=${a}..${b}`],
   };
   if (activeStatus !== "any") {
     options.zoom.is_active = activeStatus === "active";
@@ -159,7 +159,7 @@ function apiSubscription2Subscription(apiSub) {
       items: apiSub2Items(apiSub),
     };
   } catch (e) {
-    console.log('Could not build subscription object.' , e);
+    console.log('Could not build subscription object.' , e.name, e.message);
   }
 }
 
@@ -187,7 +187,6 @@ function apiSub2Customer(apiSub) {
 function apiSub2Transaction(apiSub) {
   const tx = apiSub["_embedded"]["fx:original_transaction"];
   if (!tx) {
-    console.log(tx);
     throw new Error("Original transaction not found.");
   }
   if (!tx.total_order) {
