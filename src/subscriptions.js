@@ -70,7 +70,7 @@ export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
       customer: ["first_name", "last_name", "email"],
       original_transaction: ["items"],
     },
-    filters: [`next_transaction_date=${d1.toISOString()}..${d2.toISOString()}`],
+    filters: [`end_date=${a}..${b}`],
   };
   if (activeStatus !== "any") {
     options.zoom.is_active = activeStatus === "active";
