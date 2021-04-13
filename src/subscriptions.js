@@ -64,7 +64,7 @@ export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
   const today = new Date();
   const d1 = new Date(new Date(today).setDate(today.getDate() + days));
   const d2 = new Date(new Date(d1).setDate(d1.getDate() + 1));
-  const [a, b] = [d1.toISOString(), d2.toISOString()];
+  const [a, b] = [d1.toISOString(), d2.toISOString()].map(i => i.replace(/T.*/,''));
   const options = {
     zoom: {
       customer: ["first_name", "last_name", "email"],
