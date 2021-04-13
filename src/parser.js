@@ -33,13 +33,29 @@ function restrictVariables(data) {
           quantity: i.quantity,
         }))
       : [],
-    start_date: data.start_date,
-    next_date: data.next_date,
-    end_date: data.end_date,
+    start_date: formatDate(data.start_date),
+    next_date: formatDate(data.next_date),
+    end_date: formatDate(data.end_date),
     frequency: data.frequency,
     currency: data.transaction?.currency,
     total: data.transaction?.total,
   };
+}
+
+/**
+ * Remove time info from date string in ISO format
+ *
+ * @param {string} date
+ * @returns {string} the date part of the date string
+ */
+function formatDate(date) {
+  if (!date) {
+    date = "";
+  }
+  if (date instanceof Date) {
+    date = date.toISOString();
+  }
+  return date.replace(/T.*/, '');
 }
 
 /**
