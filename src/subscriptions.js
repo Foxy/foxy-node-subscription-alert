@@ -76,14 +76,15 @@ export async function fetchSubscriptions(days, activeStatus, api = getApi()) {
     options.zoom.is_active = activeStatus === "active";
   }
   try {
-  const subscriptionsResponse = await api
-    .follow("fx:store")
-    .follow("fx:subscriptions")
-    .get(options);
-  const subscriptions = await subscriptionsResponse.json();
-  return subscriptions["_embedded"]["fx:subscriptions"];
+    const subscriptionsResponse = await api
+      .follow("fx:store")
+      .follow("fx:subscriptions")
+      .get(options);
+    const subscriptions = await subscriptionsResponse.json();
+    return subscriptions["_embedded"]["fx:subscriptions"];
   } catch (e) {
     console.error(e);
+    return null;
   }
 }
 
@@ -160,6 +161,7 @@ function apiSubscription2Subscription(apiSub) {
     };
   } catch (e) {
     console.log('  (Warning) Could not build subscription object.' , e.name, e.message);
+    return null;
   }
 }
 
