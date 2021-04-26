@@ -39,7 +39,11 @@ async function sendMail(message, transport = null) {
   if (!transport) {
     transport = getTransporter(smtpAccount);
   }
-  await transport.sendMail(message, handleMailSent);
+  try {
+    await transport.sendMail(message, handleMailSent);
+  } catch (e) {
+    console.log('Error sending email:', message, e.code, e.message);
+  }
 }
 
 function handleMailSent(err, info) {
@@ -52,14 +56,20 @@ async function sendEmailAlerts() {
   for (let folder of folders) {
     console.assert(["within", "past"].includes(folder.type));
     const days = folder.type === "past" ? folder.days * -1 : folder.days;
-    const subscriptions = await Subscriptions.getSubscriptions(
-      days,
-      folder.status
-    );
-    const messages = subscriptions.map((subscription) =>
-      Parser.folder2message(folder, subscription)
-    );
-    messages.forEach((m) => sendMail(m));
+    try {
+      const subscriptions = await Subscriptions.getSubscriptions(
+        days,
+        folder.status
+      );
+      const messages = subscriptions
+        .filter(i => !!i)
+        .map((subscription) =>
+          Parser.folder2message(folder, subscription)
+        );
+      messages.forEach((m) => sendMail(m));
+    } catch (e) {
+      console.log('Could not process folder ',  folder, 'due to', e.code, e.message);
+    }
   }
 }
 
